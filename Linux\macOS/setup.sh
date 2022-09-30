@@ -19,8 +19,8 @@ KUBECTL_BIN_SHA256_URL="https://dl.k8s.io/$(curl -Ls https://dl.k8s.io/release/s
 KUBELOGIN_BIN_URL="https://github.com/int128/kubelogin/releases/download/${KUBELOGIN_VERSION}/kubelogin_${OS}_${ARCHITECTURE}.zip"
 KUBELOGIN_BIN_SHA256_URL="https://github.com/int128/kubelogin/releases/download/${KUBELOGIN_VERSION}/kubelogin_${OS}_${ARCHITECTURE}.zip.sha256"
 
-curl -L "${KUBECTL_BIN_URL}" -o ${TMP_DIR}/kubectl
-curl -L "${KUBELOGIN_BIN_URL}" -o ${TMP_DIR}/kubelogin_${OS}_${ARCHITECTURE}.zip
+curl -sL "${KUBECTL_BIN_URL}" -o ${TMP_DIR}/kubectl
+curl -sL "${KUBELOGIN_BIN_URL}" -o ${TMP_DIR}/kubelogin_${OS}_${ARCHITECTURE}.zip
 
 cd ${TMP_DIR}
 if [[ "${OS}" == "linux" ]]; then
