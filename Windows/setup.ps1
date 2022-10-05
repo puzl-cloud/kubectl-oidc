@@ -10,16 +10,21 @@ $KUBELOGIN_VERSION = "v1.25.3"
 $KUBELOGIN_BIN_URL = "https://github.com/int128/kubelogin/releases/download/$KUBELOGIN_VERSION/kubelogin_windows_amd64.zip"
 $KUBELOGIN_BIN_SHA256_URL = "https://github.com/int128/kubelogin/releases/download/$KUBELOGIN_VERSION/kubelogin_windows_amd64.zip.sha256"
 
+Write-Output "Downloading kubectl and oidc plugin"
 Invoke-WebRequest -Uri $KUBECLT_BIN_URL -OutFile $TMP_DIR\kubectl.exe
 Invoke-WebRequest -Uri $KUBECLT_BIN_SHA256_URL -OutFile $TMP_DIR\kubectl.exe.sha256
 Invoke-WebRequest -Uri $KUBELOGIN_BIN_URL -OutFile $TMP_DIR\kubelogin_windows_amd64.zip
 Invoke-WebRequest -Uri $KUBELOGIN_BIN_SHA256_URL -OutFile $TMP_DIR\kubelogin_windows_amd64.zip.sha256
+Write-Output "Download complete"
 
+Write-Output "Checking sha256"
 $($(CertUtil -hashfile $TMP_DIR\kubectl.exe SHA256)[1] -replace " ", "") -eq $(Get-Content $TMP_DIR\kubectl.exe.sha256)
 $($(CertUtil -hashfile $TMP_DIR\kubelogin_windows_amd64.zip SHA256)[1] -replace " ", "") -eq $($(Get-Content $TMP_DIR\kubelogin_windows_amd64.zip.sha256) -replace " .*", "")
+Write-Output "Check sha256 complete"
 
 Expand-Archive $TMP_DIR\kubelogin_windows_amd64.zip -DestinationPath $TMP_DIR\kubelogin
 Copy-Item $TMP_DIR\kubectl.exe -Destination $BIN_DIR\kubectl.exe
 Copy-Item $TMP_DIR\kubelogin\kubelogin.exe -Destination $BIN_DIR\kubectl-oidc_login.exe
 
 Remove-Item -Path $TMP_DIR\kubectl.*,$TMP_DIR\kubelogin* -Recurse
+Write-Output "Done"
